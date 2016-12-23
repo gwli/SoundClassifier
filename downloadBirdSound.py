@@ -4,6 +4,7 @@ import bs4
 from bs4 import BeautifulSoup
 import logging
 import os
+import time
 
 logging.basicConfig(level=logging.INFO)
 
@@ -36,7 +37,13 @@ def download(url,local_path):
     if os.path.exists(local_path):  
         logging.info(u"skip existed :{}".format(local_path))
     else:
-       urllib.urlretrieve(url, local_path)
+        for i in range(10):
+            try:
+               urllib.urlretrieve(url, local_path)
+               break
+            except:
+               time.sleep(5)
+
 
 
 def test():
@@ -56,7 +63,12 @@ def main():
    dst_dir = u"D:\\bird_xeno-canto"
    for page_index in xrange(11183):
        url = u"{}{}".format(url_prefix,page_index)
-       html_reponse = urllib2.urlopen(url).read()
+       for i in range(10):
+           try:
+               html_reponse = urllib2.urlopen(url).read()
+               break
+           except:
+               pass
        mp3_list = parse_html(html_reponse)
        for mp3 in mp3_list:
            #("name","url")
