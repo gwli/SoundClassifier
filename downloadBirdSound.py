@@ -26,14 +26,16 @@ def parse_html(html):
             mp3_name = ahref.get('download')
             url = "http://www.xeno-canto.org"+ahref.get('href')
             logging.debug(ahref)
-            logging.info("rating:{},{}:{}".format(rating,mp3_name,url))
+            logging.info(u"rating:{},{}:{}".format(rating,mp3_name,url))
             download_list.append((mp3_name,url))
     return download_list
 
 def download(url,local_path):
     
-    logging.info("downloading {}: {}  ...".format(local_path,url))
-    if not os.path.exists(local_path):  
+    logging.info(u"downloading {}: {}  ...".format(local_path,url))
+    if os.path.exists(local_path):  
+        logging.info(u"skip existed :{}".format(local_path))
+    else:
        urllib.urlretrieve(url, local_path)
 
 
@@ -51,9 +53,9 @@ def main():
    http://www.xeno-canto.org/explore?dir=0&order=xc&pg=2
    """
    url_prefix = "http://www.xeno-canto.org/explore?dir=0&order=xc&pg="
-   dst_dir = "D:\\bird_xeno-canto"
+   dst_dir = u"D:\\bird_xeno-canto"
    for page_index in xrange(11183):
-       url = "{}{}".format(url_prefix,page_index)
+       url = u"{}{}".format(url_prefix,page_index)
        html_reponse = urllib2.urlopen(url).read()
        mp3_list = parse_html(html_reponse)
        for mp3 in mp3_list:
