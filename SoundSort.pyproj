@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{9cf29b31-ec4e-45f8-8e94-54ccb460b1bc}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>TuneMapping.py</StartupFile>
+    <StartupFile>downloadBirdSound.py</StartupFile>
     <SearchPath>.</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -24,6 +24,7 @@
     <Compile Include="DoFFT.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="downloadBirdSound.py" />
     <Compile Include="readAndPlotWave.py" />
     <Compile Include="TuneMapping.py" />
   </ItemGroup>
