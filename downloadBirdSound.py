@@ -61,7 +61,8 @@ def main():
    """
    url_prefix = "http://www.xeno-canto.org/explore?dir=0&order=xc&pg="
    dst_dir = u"D:\\bird_xeno-canto"
-   for page_index in xrange(11183):
+   for page_index in xrange(151,11183):
+       logging.info("begin downloading on Page : {}".format(page_index))
        url = u"{}{}".format(url_prefix,page_index)
        for i in range(10):
            try:
