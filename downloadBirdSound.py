@@ -8,6 +8,9 @@ import time
 
 logging.basicConfig(level=logging.INFO)
 
+def timestamp():
+    return time.asctime(time.localtime(time.time()))
+
 def parse_html(html):
     soup = BeautifulSoup(html,"lxml")
     logging.debug(soup.prettify())
@@ -33,7 +36,8 @@ def parse_html(html):
 
 def download(url,local_path):
     
-    logging.info(u"downloading {}: {}  ...".format(local_path,url))
+    logging.info(u"{} downloading {}: {}  ...".format(timestamp(), local_path,url))
+    urllib.socket.setdefaulttimeout(300)
     if os.path.exists(local_path):  
         logging.info(u"skip existed :{}".format(local_path))
     else:
@@ -42,7 +46,10 @@ def download(url,local_path):
                urllib.urlretrieve(url, local_path)
                break
             except:
-               time.sleep(5)
+               time.sleep(60)
+               if i == 9:
+                  logging.info(u"downloading failed due to timeout:{}".format(local_path))
+
 
 
 
@@ -61,8 +68,8 @@ def main():
    """
    url_prefix = "http://www.xeno-canto.org/explore?dir=0&order=xc&pg="
    dst_dir = u"D:\\bird_xeno-canto"
-   for page_index in xrange(151,11183):
-       logging.info("begin downloading on Page : {}".format(page_index))
+   for page_index in xrange(177,11183):
+       logging.info("{} begin downloading on Page : {} ".format(timestamp(),page_index))
        url = u"{}{}".format(url_prefix,page_index)
        for i in range(10):
            try:
