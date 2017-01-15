@@ -1,3 +1,4 @@
+# -*- coding=utf-8 -*-
 import urllib2
 import urllib
 import bs4
@@ -5,6 +6,8 @@ from bs4 import BeautifulSoup
 import logging
 import os
 import time
+import glob
+import codecs
 
 logging.basicConfig(level=logging.INFO)
 
@@ -61,14 +64,40 @@ def test():
     mp3_url = "http://www.xeno-canto.org/347641/download"
     #download(mp3_url,'aaa.mp3') 
 
-def main():
+def generate_media_playlist(media_dir,playlist):
+    mp3_list = glob.glob(media_dir)
+    with codecs.open(playlist,'w',encoding='utf-8') as fd:
+        fd.write("""
+    <?wpl version="1.0"?>
+<smil>
+    <head>
+        <meta name="Generator" content="Microsoft Windows Media Player -- 12.0.14393.447"/>
+        <meta name="ItemCount" content="0"/>
+        <author/>
+        <title>{}</title>
+    </head>
+    <body>
+        <seq>
+""".format(playlist))
+        for e in mp3_list:
+            line = u"""      <media src="{}"/>\n""".format(e)
+            logging.debug(line)
+            fd.write(line,)       
+        fd.write("""
+        </seq>
+    </body>
+</smil>
+""")
+
+
+def download_from_xeno_canto():
    """
    http://www.xeno-canto.org/explore?dir=0&order=xc
    http://www.xeno-canto.org/explore?dir=0&order=xc&pg=2
    """
    url_prefix = "http://www.xeno-canto.org/explore?dir=0&order=xc&pg="
    dst_dir = u"D:\\bird_xeno-canto"
-   for page_index in xrange(177,11183):
+   for page_index in xrange(6000,11183):
        logging.info("{} begin downloading on Page : {} ".format(timestamp(),page_index))
        url = u"{}{}".format(url_prefix,page_index)
        for i in range(10):
@@ -82,6 +111,8 @@ def main():
            #("name","url")
            download( mp3[1], os.path.join(dst_dir,mp3[0]))
       
-     
+def main():
+    generate_media_playlist(u"D:\\bird_xeno-canto\\*.mp3","bird.wpl")     
+
 #test()
 main()
